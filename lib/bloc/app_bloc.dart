@@ -8,8 +8,12 @@ import 'package:flutter_statemanagement/model.dart';
 class AppBloc extends Bloc<AppAction, AppState> {
   final LoginApiProtocol loginApi;
   final NotesApiProtocol notesApi;
+  final LoginHandle acceptedLoginHandle;
 
-  AppBloc({required this.loginApi, required this.notesApi})
+  AppBloc(
+      {required this.loginApi,
+      required this.notesApi,
+      required this.acceptedLoginHandle})
       : super(const AppState.empty()) {
     on<LoginAction>((event, emit) async {
       emit(const AppState(
@@ -35,7 +39,7 @@ class AppBloc extends Bloc<AppAction, AppState> {
           loginHandle: state.loginHandle,
           fetchedNotes: null));
       final loginHandle = state.loginHandle;
-      if (loginHandle != const LoginHandle.fooBar()) {
+      if (loginHandle != acceptedLoginHandle) {
         emit(AppState(
             isLoading: false,
             loginError: LoginErrors.invalidHandle,
